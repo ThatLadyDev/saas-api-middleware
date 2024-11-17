@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Devfest Lagos 2024 SAAS API Multi-Tenant Microservice",
+        "description": "API for a multi-tenant SaaS using microservices architecture on Kubernetes for Devfest Lagos 2024",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8090",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/account/create": {
+            "post": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Create a new account",
+                "description": "This endpoint allows creating a new account with name, email, password, tenant name and user type fields.",
+                "operationId": "be51600a5f32952c90b4aac0a3a3f150",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "tenant_name",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Julia Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "juliadoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "92jer239"
+                                    },
+                                    "tenant_name": {
+                                        "type": "string",
+                                        "example": "Codevixens"
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Account created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Julia Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "juliadoe@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tenants": {
+            "get": {
+                "tags": [
+                    "Tenants"
+                ],
+                "summary": "Get list of tenants",
+                "description": "Returns a list of tenants",
+                "operationId": "2fda9f264b85527a5fa938f516979792",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/tenants/{uuid}": {
+            "get": {
+                "tags": [
+                    "Tenants"
+                ],
+                "summary": "Get tenant information by UUID",
+                "description": "Fetches a specific tenant using the UUID as an identifier",
+                "operationId": "9913783b986d59a6850e4cee24bf668f",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the tenant to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Tenant Name"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "tenant@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Accounts",
+            "description": "Accounts"
+        },
+        {
+            "name": "Tenants",
+            "description": "Tenants"
+        }
+    ]
+}
